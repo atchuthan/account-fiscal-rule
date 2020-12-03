@@ -142,6 +142,9 @@ class AccountMove(models.Model):
         if not avatax_config:
             # Skip Avatax computation if no configuration is found
             return
+        if not avatax_config.disable_tax_reporting:
+            # Skip Avatax configuration if Tax reporting is disabled
+            return
         doc_type = self._get_avatax_doc_type(commit=commit)
         tax_date = self.get_origin_tax_date() or self.invoice_date
         taxable_lines = self._avatax_prepare_lines(doc_type)
